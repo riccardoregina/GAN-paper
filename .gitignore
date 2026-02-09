@@ -1,0 +1,50 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+
+# Bibliography files
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# PDF output
+*.pdf
+
+# Index files
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.ist
+
+# SyncTeX
+*.synctex.gz
+
+# Beamer
+*.nav
+*.snm
+*.vrb
+
+# Other LaTeX temp files
+*.dvi
+*.ps
+*.xdv
+
+# Editors
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
