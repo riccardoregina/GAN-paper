@@ -1,0 +1,57 @@
+\section{Risultati}
+Abbiamo implementato il framework descritto con \texttt{PyTorch} su dataset \texttt{MNIST}. Il codice è disponibile presso \url{https://github.com/TheFabbest/GAN}. Prima di analizzare i risultati, menzioniamo le modifiche apportate all'esperimento condotto in \cite{goodfellow2014generativeadversarialnetworks}.
+Poiché \ref{alg:algorithm1} lo permetteva, abbiamo rimpiazzato \textit{SGD} con il più moderno \textit{ADAM}, con parametri $\beta_{1}=0.5$ e $\beta_{2}=0.999$.
+Abbiamo sostituito \textit{MaxOut} con \textit{LeakyReLU} e applicato \textit{batch normalization} su $G$ per spingere i suoi neuroni ad apprendere pattern statisticamente indipendenti tra loro. La \textit{batch normalization} ha migliorato anche la stabilità del training.
+
+ Fissati degli iperparametri, durante il training è stato possibile osservare tre possibili casi, di cui uno solo garantisce un buon apprendimento per $G$:
+\begin{enumerate}
+\item $G$ domina su $D$. In questo caso, $D$ non riesce a punire $G$ su pattern non propri ai dati reali, portando $G$ a non imparare bene. Questa situazione dovrebbe essere sempre evitata.
+\item $D$ domina su $G$. In questo caso, la troppa capacità discriminatoria di $D$ porta $G$ ad avere gradiente nullo e quindi a non imparare. Questa situazione, se verificatasi dall'inizio del training, porta $G$ a produrre pattern impropri ed estremamente rumorosi.
+\item $D$ e $G$ hanno capacità confrontabile. In questo caso, il training avviene nel modo sperato. Tuttavia, affinché $G$ impari a generare realmente bene i dati, è necessario che questa situazione perduri per tutto il training. Questo è il motivo per cui trovare gli iperparametri risulta complesso.
+\end{enumerate}
+
+Abbiamo condotto il training con vari iperparametri. Uno per uno, ne riassumeremo le influenze sulla qualità della generazione finale: 
+\begin{itemize}
+\item Abbiamo sperimentato tre valori per la dimensione del mini-batch: $64$, $128$ e $256$, ottenendo i risultati migliori per $64$, con cui abbiamo riscontrato minore rumore nelle generazioni.
+\item Abbiamo ossrvato che il valore della funzione di errore del generatore non è un buon indice della qualità delle generazioni. Quindi, non potendo fare completo affidamento sul valore delle funzioni di errore, non abbiamo implementato l'early stopping, permettendo un massimo di 500 epoche. Dopo aver raggiunto il miglior modello per gli iperparametri fissati, il generatore tende a spostare sempre più noise $z$ alla cifra $1$. Questo fenomeno è noto come \textbf{mode collapse}. Possiamo motivare questo fenomeno dicendo che il generatore, non essendo obbligato a saper generare tutte le cifre, concentra i suoi sforzi su quelle cifre che gli permettono di ingannare il discriminatore.
+\item Valori maggiori di $1$ per $k$, ovvero il numero di aggiornamenti di $D$ per aggiornamenti di $G$, hanno reso troppo più veloce l'apprendimento di $D$, portando $D$ a dominare su $G$. Crediamo che aumentare il \textit{learning rate} per $D$ abbia la stessa influenza che ha aumentare il valore di $k$.
+\item Abbiamo osservato che valori bassi di \textit{learning rate} garantiscono cautela nell'apprendimento di $G$ e pertanto una migliore generazione.
+\item Abbiamo sperimentato l'uso di \textit{dropout} nel discriminatore, ma con esso abbiamo riscontrato un apprendimento troppo veloce.
+\item Abbiamo ottenuto migliori generatori per discriminatori meno profondi ed in generale meno capaci. Crediamo che questo sia dovuto alla difficoltà maggiore del task di $G$ rispetto a quello di $D$.
+\end{itemize}
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.24\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_1.png}
+\end{subfigure}
+\begin{subfigure}{0.24\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_2.png}
+\end{subfigure}
+\begin{subfigure}{0.24\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_3.png}
+\end{subfigure}
+\begin{subfigure}{0.24\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_4.png}
+\end{subfigure}
+\caption{I dati in figura sonon stati generati campionando noise da $p_{z}$ ed utilizzando il generatore migliore trovato durante gli esperimenti.}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_morph_1.png}
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_morph_2.png}
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_morph_3.png}
+\end{subfigure}
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[width=0.9\textwidth]{images/digits_morph_4.png}
+\end{subfigure}
+\caption{Ciascuna sequenza di immagini è stata ottenuta campionando due noise da $p_{z}$ ed effettuando un'interpolazione tra i due. Ciò mostra il percorso che porta da una cifra all'altra.}
+\end{figure}
+
+AA
