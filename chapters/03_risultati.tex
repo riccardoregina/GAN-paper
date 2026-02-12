@@ -13,7 +13,7 @@ Abbiamo sostituito \textit{MaxOut} con \textit{LeakyReLU} e applicato \textit{ba
 Abbiamo condotto il training con vari iperparametri. Uno per uno, ne riassumeremo le influenze sulla qualità della generazione finale: 
 \begin{itemize}
 \item Abbiamo sperimentato tre valori per la dimensione del mini-batch: $64$, $128$ e $256$, ottenendo i risultati migliori per $64$, con cui abbiamo riscontrato minore rumore nelle generazioni.
-\item Abbiamo ossrvato che il valore della funzione di errore del generatore non è un buon indice della qualità delle generazioni. Quindi, non potendo fare completo affidamento sul valore delle funzioni di errore, non abbiamo implementato l'early stopping, permettendo un massimo di 500 epoche. Dopo aver raggiunto il miglior modello per gli iperparametri fissati, il generatore tende a spostare sempre più noise $z$ alla cifra $1$. Questo fenomeno è noto come \textbf{mode collapse}. Possiamo motivare questo fenomeno dicendo che il generatore, non essendo obbligato a saper generare tutte le cifre, concentra i suoi sforzi su quelle cifre che gli permettono di ingannare il discriminatore.
+\item Abbiamo osservato che il valore della funzione di errore del generatore non è un buon indice della qualità delle generazioni. Quindi, non potendo fare completo affidamento sul valore delle funzioni di errore, non abbiamo implementato l'early stopping, permettendo un massimo di 500 epoche. Dopo aver raggiunto il miglior modello per gli iperparametri fissati, il generatore tende a spostare sempre più noise $z$ alla cifra $1$. Questo fenomeno è noto come \textbf{mode collapse}. Possiamo motivare questo fenomeno dicendo che il generatore, non essendo obbligato a saper generare tutte le cifre, concentra i suoi sforzi su quelle cifre che gli permettono di ingannare il discriminatore.
 \item Valori maggiori di $1$ per $k$, ovvero il numero di aggiornamenti di $D$ per aggiornamenti di $G$, hanno reso troppo più veloce l'apprendimento di $D$, portando $D$ a dominare su $G$. Crediamo che aumentare il \textit{learning rate} per $D$ abbia la stessa influenza che ha aumentare il valore di $k$.
 \item Abbiamo osservato che valori bassi di \textit{learning rate} garantiscono cautela nell'apprendimento di $G$ e pertanto una migliore generazione.
 \item Abbiamo sperimentato l'uso di \textit{dropout} nel discriminatore, ma con esso abbiamo riscontrato un apprendimento troppo veloce.
@@ -34,7 +34,7 @@ Abbiamo condotto il training con vari iperparametri. Uno per uno, ne riassumerem
 \begin{subfigure}{0.24\textwidth}
 \includegraphics[width=0.9\textwidth]{images/digits_4.png}
 \end{subfigure}
-\caption{I dati in figura sonon stati generati campionando noise da $p_{z}$ ed utilizzando il generatore migliore trovato durante gli esperimenti.}
+\caption{I dati in figura sono stati generati campionando noise da $p_{z}$ ed utilizzando il generatore migliore trovato durante gli esperimenti.}
 \end{figure}
 
 \begin{figure}
@@ -54,4 +54,19 @@ Abbiamo condotto il training con vari iperparametri. Uno per uno, ne riassumerem
 \caption{Ciascuna sequenza di immagini è stata ottenuta campionando due noise da $p_{z}$ ed effettuando un'interpolazione tra i due. Ciò mostra il percorso che porta da una cifra all'altra.}
 \end{figure}
 
-AA
+\begin{figure}
+\centering
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[width=0.9\textwidth]{images/training-case-1.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[width=0.9\textwidth]{images/training-case-2.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[width=0.9\textwidth]{images/training-case-3.png}
+\caption{}
+\end{subfigure}
+\caption{I tre casi in cui può trovarsi il gioco: (a) $G$ domina su $D$; (b) $D$ domina su $G$; (c) $D$ e $G$ hanno capacità confrontabile. Le figure mostrano anche il processo con cui abbiamo valutato l'apprendimento del generatore.}
+\end{figure}
