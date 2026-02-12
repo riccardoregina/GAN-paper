@@ -17,7 +17,7 @@ Abbiamo condotto il training al variare di alcuni iperparametri. Ne riassumeremo
 \item Valori maggiori di $1$ per $k$, ovvero il numero di aggiornamenti di $D$ per aggiornamenti di $G$, hanno reso troppo più veloce l'apprendimento di $D$, portando $D$ a dominare su $G$. Sebbene si possa pensare che aumentare il \textit{learning rate} per $D$ sia equivalente ad aumentare il valore di $k$, ciò non è vero: $k$ aggiornamenti con passo $lr$ sono generalmente più precisi, in termini di discesa del gradiente, rispetto ad un singolo aggiornamento con passo $k\cdot lr$.
 \item Abbiamo osservato che valori bassi di \textit{learning rate} garantiscono cautela nell'apprendimento di $G$ e pertanto una migliore generazione. Ciò è tipico nel training di una rete e le GAN non fanno eccezione.
 \item Abbiamo sperimentato l'uso di \textit{dropout} nel discriminatore. Sebbene l'uso di \textit{dropout} sia tipicamente causa di una convergenza più lenta, è anche vero che esso permette alla rete una maggiore capacità. Abbiamo visto che l'uso di dropout, per la maggior parte delle configurazioni, ha portato il discriminatore ad essere troppo forte rispetto al generatore e quindi a dominare il gioco. 
-\item Abbiamo ottenuto risultati per discriminatori meno profondi rispetto ai rispettivi generatori. Crediamo che questo sia dovuto alla difficoltà maggiore del task di $G$ rispetto a quello di $D$.
+\item Abbiamo ottenuto risultati migliori per discriminatori meno profondi rispetto ai rispettivi generatori. Crediamo che questo sia dovuto alla difficoltà maggiore del task di $G$ rispetto a quello di $D$.
 \end{itemize}
 
 \begin{figure}
